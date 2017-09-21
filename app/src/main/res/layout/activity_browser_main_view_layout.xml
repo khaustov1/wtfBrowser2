@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_view_frame_tabs_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"/>
+    <ImageButton
+        android:id="@+id/main_view_new_frame"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_add"/>
+</LinearLayout>
+    <FrameLayout
+        android:id="@+id/main_view_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
