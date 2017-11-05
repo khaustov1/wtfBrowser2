@@ -31,7 +31,8 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
 
         tabListRecyclerView = findViewById(R.id.main_view_frame_tabs_list) as RecyclerView
         tabListRecyclerView.adapter = tabListAdapter
-        tabListRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        tabListRecyclerView.layoutManager = LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false)
 
         openNewTabButton = findViewById(R.id.main_view_new_frame) as ImageButton
         openNewTabButton.setOnClickListener {
@@ -44,7 +45,6 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     override fun onViewCreated() {
         mainViewPresenter.onViewCreated()
     }
-
 
     override fun switchTab(position: Int) {
         tabList.takeIf { tabList.isNotEmpty() }?.apply {

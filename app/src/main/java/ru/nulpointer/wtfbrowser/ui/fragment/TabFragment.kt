@@ -67,6 +67,7 @@ class TabFragment : Fragment(), ITabView {
         webView.settings.allowFileAccessFromFileURLs = true
         webView.settings.javaScriptEnabled = true
         webView.settings.setSupportZoom(true)
+        webView.settings.builtInZoomControls = true
     }
 
     private fun initAddressSpaceUI() {
