@@ -81,6 +81,7 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
         supportFragmentManager.beginTransaction().add(R.id.main_view_frame, tab).commit()
         updateCurrentTabPosition()
         tabListAdapter.notifyDataSetChanged()
+        tabListRecyclerView.smoothScrollToPosition(tabList.lastIndex)
     }
 
     override fun updateAllTabs() {

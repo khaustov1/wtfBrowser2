@@ -47,6 +47,7 @@ class TabFragment : Fragment(), ITabView {
         return view
     }
 
+    @Suppress("OverridingDeprecatedMember")
     private fun initWebView() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
