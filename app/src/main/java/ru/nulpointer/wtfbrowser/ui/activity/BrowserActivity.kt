@@ -75,10 +75,10 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     }
 
     override fun openNewTab() {
-        val tab = TabFragment.getInstance(TabData.emptyTab())
-        tabList.add(tab)
+        val newEmptyTab = TabFragment.getInstance(TabData.emptyTab())
+        tabList.add(newEmptyTab)
         supportFragmentManager.beginTransaction().hide(tabList[activeTabIndex]).commit()
-        supportFragmentManager.beginTransaction().add(R.id.main_view_frame, tab).commit()
+        supportFragmentManager.beginTransaction().add(R.id.main_view_frame, newEmptyTab).commit()
         updateCurrentTabPosition()
         tabListAdapter.notifyDataSetChanged()
         tabListRecyclerView.smoothScrollToPosition(tabList.lastIndex)
