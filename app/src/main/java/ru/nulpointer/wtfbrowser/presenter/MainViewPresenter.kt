@@ -7,6 +7,10 @@ import ru.nulpointer.wtfbrowser.ui.activity.IBrowserView
  * Created by Khaustov on 21.09.17.
  */
 class MainViewPresenter(private val browserView: IBrowserView) : IMainPresenter {
+    init {
+
+    }
+
     override fun onNewTabOpened() {
         browserView.openNewTab()
     }

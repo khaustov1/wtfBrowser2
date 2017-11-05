@@ -16,7 +16,7 @@ import ru.nulpointer.wtfbrowser.R
 import ru.nulpointer.wtfbrowser.model.TabData
 import ru.nulpointer.wtfbrowser.presenter.TabPresenter
 import ru.nulpointer.wtfbrowser.presenter.interfaces.ITabPresenter
-import ru.nulpointer.wtfbrowser.ui.adapter.ITabListController
+import ru.nulpointer.wtfbrowser.ui.activity.IBrowserView
 import ru.nulpointer.wtfbrowser.utils.KeyBoardManager
 
 
@@ -25,7 +25,7 @@ import ru.nulpointer.wtfbrowser.utils.KeyBoardManager
  */
 class TabFragment : Fragment(), ITabView {
     private lateinit var tabInfo: TabData
-    private lateinit var tabListController: ITabListController
+    private lateinit var browserView: IBrowserView
     private lateinit var webView: WebView
     private lateinit var goToUrlButton: ImageButton
     private lateinit var urlEditText: EditText
@@ -36,7 +36,7 @@ class TabFragment : Fragment(), ITabView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_tab_layout, container, false)
 
-        presenter = TabPresenter(this, tabListController)
+        presenter = TabPresenter(this, browserView)
 
         webView = view.findViewById(R.id.tab_item_webView)
         urlEditText = view.findViewById(R.id.tab_item_url)
@@ -102,10 +102,10 @@ class TabFragment : Fragment(), ITabView {
     }
 
     companion object {
-        fun getInstance(tab: TabData, tabController: ITabListController): TabFragment {
+        fun getInstance(tab: TabData, tabController: IBrowserView): TabFragment {
             val tabFragment = TabFragment()
             tabFragment.tabInfo = tab
-            tabFragment.tabListController = tabController
+            tabFragment.browserView = tabController
             return tabFragment
         }
     }

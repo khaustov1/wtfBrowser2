@@ -87,6 +87,7 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     override fun openNewTab() {
         val tab = TabFragment.getInstance(TabData.emptyTab(), this)
         tabList.add(tab)
+        supportFragmentManager.beginTransaction().hide(tabList[activeTabIndex]).commit()
         supportFragmentManager.beginTransaction().add(R.id.main_view_frame, tab).commit()
         updateCurrentTabPosition()
         tabListAdapter.notifyDataSetChanged()
