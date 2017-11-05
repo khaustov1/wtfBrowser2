@@ -25,7 +25,6 @@ import ru.nulpointer.wtfbrowser.utils.KeyBoardManager
  */
 class TabFragment : Fragment(), ITabView {
     private lateinit var tabInfo: TabData
-    private lateinit var browserView: IBrowserView
     private lateinit var webView: WebView
     private lateinit var goToUrlButton: ImageButton
     private lateinit var urlEditText: EditText
@@ -103,10 +102,9 @@ class TabFragment : Fragment(), ITabView {
     }
 
     companion object {
-        fun getInstance(tab: TabData, tabController: IBrowserView): TabFragment {
+        fun getInstance(tab: TabData): TabFragment {
             val tabFragment = TabFragment()
             tabFragment.tabInfo = tab
-            tabFragment.browserView = tabController
             return tabFragment
         }
     }
