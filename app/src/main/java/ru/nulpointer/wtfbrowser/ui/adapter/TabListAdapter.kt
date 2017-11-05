@@ -19,7 +19,7 @@ class TabListAdapter(private val tabList: ArrayList<TabFragment>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tab = tabList[position]
-        holder.header.text = tab.tabInfo.header
+        holder.header.text = tab.getTitle()
         holder.header.setOnClickListener {
             mainViewPresenter.onTabSelected(position)
         }

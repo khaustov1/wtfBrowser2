@@ -6,4 +6,6 @@ package ru.nulpointer.wtfbrowser.ui.fragment
  */
 interface ITabView {
     fun goToPage(url: String)
+    fun setTitle(title: String)
+    fun getTitle() : String
 }

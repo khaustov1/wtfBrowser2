@@ -1,66 +1,86 @@
 package ru.nulpointer.wtfbrowser.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import ru.nulpointer.wtfbrowser.R
 import ru.nulpointer.wtfbrowser.model.TabData
-import ru.nulpointer.wtfbrowser.presenter.interfaces.ITabPresenter
 import ru.nulpointer.wtfbrowser.presenter.TabPresenter
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.support.v7.app.AppCompatActivity
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
+import ru.nulpointer.wtfbrowser.presenter.interfaces.ITabPresenter
+import ru.nulpointer.wtfbrowser.ui.adapter.ITabListController
 import ru.nulpointer.wtfbrowser.utils.KeyBoardManager
 
 
 /**
  * Created by Khaustov on 21.09.17.
  */
-class TabFragment private constructor() : Fragment(), ITabView {
-    lateinit var tabInfo: TabData
+class TabFragment : Fragment(), ITabView {
+    private lateinit var tabInfo: TabData
+    private lateinit var tabListController: ITabListController
     private lateinit var webView: WebView
     private lateinit var goToUrlButton: ImageButton
     private lateinit var urlEditText: EditText
 
-    private val presenter : ITabPresenter = TabPresenter(this)
+    private lateinit var presenter: ITabPresenter
 
+    @SuppressWarnings("deprecation")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_tab_layout, container, false)
 
-        webView = view.findViewById<WebView>(R.id.tab_item_webView) as WebView
+        presenter = TabPresenter(this, tabListController)
+
+        webView = view.findViewById(R.id.tab_item_webView)
+        urlEditText = view.findViewById(R.id.tab_item_url)
+        goToUrlButton = view.findViewById(R.id.tab_item_go_to_url)
+
+        initWebView()
+        initAddressSpaceUI()
+
+        return view
+    }
+
+    private fun initWebView() {
         webView.webViewClient = object : WebViewClient() {
-            @SuppressWarnings("deprecation")
-            override fun shouldOverrideUrlLoading(view :WebView, url: String): Boolean {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 view.loadUrl(url)
                 return true
             }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                view?.apply {
+                    presenter.onUrlLoaded(view.title)
+                }
+            }
         }
         webView.webChromeClient = WebChromeClient()
+        webView.settings.allowContentAccess = true
+        webView.settings.allowFileAccess = true
+        webView.settings.allowFileAccessFromFileURLs = true
+        webView.settings.javaScriptEnabled = true
+        webView.settings.setSupportZoom(true)
+    }
 
-        urlEditText = view.findViewById(R.id.tab_item_url)
+    private fun initAddressSpaceUI() {
         urlEditText.setOnEditorActionListener { textView, id, keyEvent ->
-            if(id == EditorInfo.IME_ACTION_DONE) {
+            if (id == EditorInfo.IME_ACTION_DONE) {
                 presenter.onUrlSubmitted(urlEditText.text.toString())
             }
             id == EditorInfo.IME_ACTION_DONE
         }
 
-        goToUrlButton = view.findViewById(R.id.tab_item_go_to_url)
         goToUrlButton.setOnClickListener {
             presenter.onUrlSubmitted(urlEditText.text.toString())
         }
-        return view
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -73,10 +93,19 @@ class TabFragment private constructor() : Fragment(), ITabView {
         webView.loadUrl(url)
     }
 
+    override fun setTitle(title: String) {
+        tabInfo.header = title
+    }
+
+    override fun getTitle(): String {
+        return tabInfo.header
+    }
+
     companion object {
-        fun getInstance(tab: TabData): TabFragment {
+        fun getInstance(tab: TabData, tabController: ITabListController): TabFragment {
             val tabFragment = TabFragment()
             tabFragment.tabInfo = tab
+            tabFragment.tabListController = tabController
             return tabFragment
         }
     }

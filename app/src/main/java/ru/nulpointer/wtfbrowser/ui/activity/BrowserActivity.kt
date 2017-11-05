@@ -23,7 +23,7 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     private lateinit var openNewTabButton: ImageButton
     private lateinit var tabListRecyclerView: RecyclerView
 
-    private var activeTabIndex = 0
+    private var activeTabIndex : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +42,9 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     }
 
     private fun setupBrowserTabs() {
-        when (tabList.size) {
-            0 -> openNewTab()
-            else -> switchTab(tabList.size - 1)
+        when (tabList.isEmpty()) {
+            true -> openNewTab()
+            false -> switchTab(tabList.size - 1)
         }
     }
 
@@ -55,15 +55,15 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     }
 
     override fun closeTab(position: Int) {
-        when (tabList.size) {
-            0 -> {
-                val emptyTab = TabFragment.getInstance(TabData.emptyTab())
+        when (tabList.isEmpty()) {
+            true -> {
+                val emptyTab = TabFragment.getInstance(TabData.emptyTab(), this)
                 tabList.add(emptyTab)
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.main_view_frame, emptyTab)
                         .commit()
             }
-            else -> {
+            false -> {
                 supportFragmentManager.beginTransaction()
                         .detach(tabList[position])
                         .commit()
@@ -78,20 +78,21 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     }
 
     private fun updateCurrentTabPosition() {
-        activeTabIndex = when (tabList.size) {
-            0 -> 0
-            else -> tabList.size - 1
+        activeTabIndex = when (tabList.isEmpty()) {
+            true -> 0
+            false -> tabList.size - 1
         }
     }
 
     override fun openNewTab() {
-        val tab = TabFragment.getInstance(TabData.emptyTab())
-        if (tabList.size > 0) {
-            supportFragmentManager.beginTransaction().hide(tabList[activeTabIndex]).commit()
-        }
+        val tab = TabFragment.getInstance(TabData.emptyTab(), this)
         tabList.add(tab)
         supportFragmentManager.beginTransaction().add(R.id.main_view_frame, tab).commit()
         updateCurrentTabPosition()
+        tabListAdapter.notifyDataSetChanged()
+    }
+
+    override fun updateAllTabs() {
         tabListAdapter.notifyDataSetChanged()
     }
 

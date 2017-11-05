@@ -8,4 +8,5 @@ interface IBrowserView {
     fun closeTab(position: Int)
     fun openNewTab()
     fun getActiveTabIndex() : Int
+    fun updateAllTabs()
 }

@@ -5,4 +5,5 @@ package ru.nulpointer.wtfbrowser.presenter.interfaces
  */
 interface ITabPresenter {
     fun onUrlSubmitted(url: String)
+    fun onUrlLoaded(pageTitle: String)
 }
