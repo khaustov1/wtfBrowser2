@@ -23,7 +23,7 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     private lateinit var openNewTabButton: ImageButton
     private lateinit var tabListRecyclerView: RecyclerView
 
-    private var activeTabIndex : Int = 0
+    private var activeTabIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +42,8 @@ class BrowserActivity : AppCompatActivity(), IBrowserView {
     }
 
     private fun setupBrowserTabs() {
-        when (tabList.isEmpty()) {
-            true -> openNewTab()
-            false -> switchTab(tabList.size - 1)
-        }
+        tabList.takeIf { tabList.isEmpty() }?.apply { openNewTab() }
+                ?: apply { switchTab(tabList.size - 1) }
     }
 
     override fun switchTab(position: Int) {
