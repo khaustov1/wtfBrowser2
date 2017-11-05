@@ -36,7 +36,7 @@ class TabFragment : Fragment(), ITabView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_tab_layout, container, false)
 
-        presenter = TabPresenter(this, browserView)
+        presenter = TabPresenter(this)
 
         webView = view.findViewById(R.id.tab_item_webView)
         urlEditText = view.findViewById(R.id.tab_item_url)
@@ -95,6 +95,7 @@ class TabFragment : Fragment(), ITabView {
 
     override fun setTitle(title: String) {
         tabInfo.header = title
+        (activity as IBrowserView).updateAllTabs()
     }
 
     override fun getTitle(): String {
